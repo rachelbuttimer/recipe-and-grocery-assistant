@@ -1,0 +1,22 @@
+[project]
+name = "recipe-and-grocery-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "rachelbuttimer", email = "rachel.buttimer@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "chromadb>=1.5.9",
+    "google-genai>=2.33.0",
+    "langchain>=1.4.7",
+    "streamlit>=1.66.1",
+]
+
+[project.scripts]
+recipe-and-grocery-assistant = "recipe_and_grocery_assistant:main"
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"
