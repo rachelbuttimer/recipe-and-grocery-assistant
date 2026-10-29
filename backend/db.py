@@ -7,7 +7,7 @@ DB_PATH = Path("assets/user_profile.db")
 # ensures the assets directory exists and returns a database connection
 def get_connection():
     # creates parent directory
-    DB_PATH.parent.mkdirtory (parents=True, exist_ok=True)
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     # can access columns by name
     conn.row_factory = (sqlite3.Row)
