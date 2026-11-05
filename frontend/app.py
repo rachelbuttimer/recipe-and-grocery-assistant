@@ -16,9 +16,6 @@ db.init_db()
 home = st.Page("pages/home.py", title="Home", icon=":material/home:")
 profile = st.Page("pages/profile.py", title="Profile", icon=":material/person:")
 page = st.navigation([home, profile])
-
 profile_data = db.get_user_profile()
-if db.get_user_profile() is None and page != profile:
-    st.switch_page(profile)
 
 page.run()
