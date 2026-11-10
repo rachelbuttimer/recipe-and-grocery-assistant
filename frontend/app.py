@@ -10,7 +10,6 @@ if external_dir not in sys.path:
 
 import db # type: ignore
 
-
 db.init_db()
 
 home = st.Page("pages/home.py", title="Home", icon=":material/home:")
