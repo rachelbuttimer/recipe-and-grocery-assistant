@@ -1,13 +1,4 @@
 import streamlit as st
-import sys
-from pathlib import Path
-
-# find root directory
-root_dir = Path(__file__).resolve().parent.parent.parent
-if str(root_dir) not in sys.path:
-  sys.path.insert(0, str(root_dir))
-
-from backend import db
 
 st.set_page_config(layout="wide")
 
@@ -121,7 +112,7 @@ st.html("""
     </style>
 """)
 
-recipe_col, groceries_col = st.columns(2, gap="large")
+spacer_col, recipe_col, spacer_col, groceries_col, spacer_col = st.columns([0.5, 2, 1, 2, 0.5])
 
 # recipe on notebook paper
 with recipe_col:

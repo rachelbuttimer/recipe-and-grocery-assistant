@@ -2,8 +2,9 @@ import sqlite3
 from pathlib import Path
 from contextlib import closing
 import json
+from pathlib import Path
 
-DB_PATH = Path("assets/user_profile.db")
+DB_PATH = Path("data/user_profile.db")
 
 # ensures the assets directory exists and returns a database connection
 def get_connection():

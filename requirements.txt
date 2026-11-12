@@ -2,3 +2,4 @@ streamlit
 langchain
 chromadb
 google-genai
+langchain_google_genai
