@@ -24,7 +24,8 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 ### 3. Download the Foundational Recipe Dataset
 Download the recipe dataset from Kaggle: https://www.kaggle.com/datasets/wafaaelhusseini/extended-recipes-dataset-64k-dishes
-Extract the CSV file, rename it to "recipes.csv", and place it inside the root data/ directory
+
+Extract the CSV file, rename it to "recipes.csv", and place it inside the data/ directory
 
 ### 4. Build the Local ChromaDB Vector Store
 Run the ingestion script (backend/ingest_recipes.py) once to sample 500 diverse recipes from the dataset, extract dietary tags, and generate embeddings:
