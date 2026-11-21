@@ -5,5 +5,7 @@ USER_PROMPT_TEMPLATE = """
         - Dietary Restrictions: {dietary_restrictions}
         - Weekly Budget: ${weekly_budget}
 
+    Reference Recipe Context: {retrieved_context}
+
     User Request: {user_query}
 """

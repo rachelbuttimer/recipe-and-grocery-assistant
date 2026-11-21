@@ -3,3 +3,4 @@ langchain
 chromadb
 google-genai
 langchain_google_genai
+langchain_chroma

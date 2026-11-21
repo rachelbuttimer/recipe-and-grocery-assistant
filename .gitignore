@@ -4,3 +4,5 @@ __pycache__
 user_profile.db
 logs
 *.log
+chroma_db
+recipes.csv
