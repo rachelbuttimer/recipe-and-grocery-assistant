@@ -1,4 +1,16 @@
+import json
 import streamlit as st
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_google_genai import ChatGoogleGenerativeAI
+from backend.prompt_engine import build_prompt_input, get_prompt_template
+
+# initialize session memory on first load
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+if "current_plan" not in st.session_state:
+    st.session_state.current_plan = None
 
 st.set_page_config(layout="wide")
 
@@ -132,9 +144,27 @@ with groceries_col:
     </div>
     """, unsafe_allow_html=True)
 
-user_prompt = st.chat_input("Ask for a recipe or paste a URL...", max_chars=1000)
+llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash-lite", temperature=0.2)
+chain = get_prompt_template() | llm | StrOutputParser()
+user_prompt = st.chat_input("Ask for a recipe, paste a URL, or refine a previous request", max_chars=1000)
 
 if user_prompt:
-    # update this calculation. currently ~1 token per 4 characters
-    estimated_tokens = round(len(user_prompt) / 4)
-    st.caption(f"Input received: {len(user_prompt)} characters (~{estimated_tokens} tokens)")
+    with st.spinner("Updating your recipe and grocery list..."):
+        # build profile + RAG/URL context
+        inputs = build_prompt_input(user_prompt)
+        inputs["chat_history"] = st.session_state.chat_history
+        # invoke Gemini with full conversation history
+        raw_response = chain.invoke(inputs)
+
+        # save turn to session memory
+        st.session_state.chat_history.append(HumanMessage(content=user_prompt))
+        st.session_state.chat_history.append(AIMessage(content=raw_response))
+
+        # parse JSON for the recipe/grocery cards
+        clean_json = raw_response.strip().removeprefix("```json").removesuffix("```").strip()
+        st.session_state.current_plan = json.loads(clean_json)
+
+    formatted_messages = get_prompt_template().format_messages(**inputs)
+    token_count = llm.get_num_tokens_from_messages(formatted_messages)
+
+    st.caption(f"Input received: {len(user_prompt)} characters ({token_count:,} total prompt tokens)")

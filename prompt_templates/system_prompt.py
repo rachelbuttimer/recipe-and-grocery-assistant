@@ -14,6 +14,8 @@ SYSTEM_PROMPT = """
         5. Budget Adherence:
             - Provide realistic price estimates for all missing ingredients.
             - Keep the estimated total cost within or close to the user's weekly budget limit.
+        6. Modifications:
+            - If chat history contains an active recipe and the user asks for a modification, modify the existing recipe rather than starting over.
 
     Output Structure:
         Return ONLY valid JSON matching this exact structure (no extra comments):

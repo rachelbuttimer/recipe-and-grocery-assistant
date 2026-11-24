@@ -1,4 +1,4 @@
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from backend import db
 from prompt_templates.system_prompt import SYSTEM_PROMPT
 from prompt_templates.user_prompt import USER_PROMPT_TEMPLATE
@@ -7,15 +7,17 @@ from backend.url_scraper import extract_url, scrape_recipe_url
 
 # combines the system prompt and user prompt template into a langchain ChatPromptTemplate
 def get_prompt_template() -> ChatPromptTemplate:
-  return ChatPromptTemplate.from_messages(
-    [("system", SYSTEM_PROMPT), ("human", USER_PROMPT_TEMPLATE)]
-  )
+  return ChatPromptTemplate.from_messages([
+    ("system", SYSTEM_PROMPT), 
+    MessagesPlaceholder(variable_name="chat_history"), # injects past turns
+    ("human", USER_PROMPT_TEMPLATE)
+  ])
 
 # formats the user profile for the prompt template
 def build_prompt_input(user_query: str, scraped_recipe: str | None = None) -> dict:
   profile = db.get_user_profile() or {}
   url = extract_url(user_query)
-  
+
   if url:
       context = scrape_recipe_url(url)
   else:
