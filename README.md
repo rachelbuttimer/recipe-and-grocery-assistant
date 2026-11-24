@@ -60,3 +60,8 @@ Test semantic recipe retrieval from ChromaDB:
 ```bash
 uv run --no-project python -c "from backend.retriever import retrieve_relevant_recipes; print(retrieve_relevant_recipes('quick vegetarian dinner', k=2))"
 ```
+
+Test that the system switches between ChromaDB RAG retrieval and URL scraping:
+```bash
+uv run --no-project python backend/test_pipeline.py
+```
