@@ -3,6 +3,7 @@ from backend import db
 from prompt_templates.system_prompt import SYSTEM_PROMPT
 from prompt_templates.user_prompt import USER_PROMPT_TEMPLATE
 from backend.retriever import retrieve_relevant_recipes
+from backend.url_scraper import extract_url, scrape_recipe_url
 
 # combines the system prompt and user prompt template into a langchain ChatPromptTemplate
 def get_prompt_template() -> ChatPromptTemplate:
@@ -13,7 +14,12 @@ def get_prompt_template() -> ChatPromptTemplate:
 # formats the user profile for the prompt template
 def build_prompt_input(user_query: str, scraped_recipe: str | None = None) -> dict:
   profile = db.get_user_profile() or {}
-  context = scraped_recipe if scraped_recipe else retrieve_relevant_recipes(user_query, k=3)
+  url = extract_url(user_query)
+  
+  if url:
+      context = scrape_recipe_url(url)
+  else:
+      context = retrieve_relevant_recipes(user_query, k=3)
 
   return {
       "kitchen_equipment": ", ".join(profile.get("kitchen_equipment", [])) or "none",
